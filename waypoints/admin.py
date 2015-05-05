@@ -1,3 +1,5 @@
-from django.contrib import admin
+from waypoints.models import WayPoint
+from django.contrib.gis import admin
 
-# Register your models here.
+
+admin.site.register(WayPoint, admin.GeoModelAdmin)

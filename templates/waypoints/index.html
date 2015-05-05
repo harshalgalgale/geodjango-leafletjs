@@ -6,11 +6,22 @@
 		 <style>
             body {font-family: sans-serif}
             #map { width: 500px; height: 300px}
+            .waypoint {
+            	color: darkblue;
+            	cursor: pointer;
+            }
+            .waypoint.hover {
+            	color: white;
+            	background-color: darkblue;
+            }
         </style>
     </head>
     <body>
     	<h2>{{title}}</h2>
     	<div id='map'></div>
+    	<div id='waypoints'>
+    		{{ content }}
+    	</div>
 	</body>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
@@ -23,6 +34,51 @@
     			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
     			maxZoom: 18
     		}).addTo(map);
+
+    		var marker;
+    		var waypointsByID = {};
+
+    		{% for waypoint in waypoints %}
+    		waypointsByID["{{ waypoint.id }}"] = {
+    			name: "{{ waypoint.name }}",
+    			lat: "{{ waypoint.geometry.y }}",
+    			lng: "{{ waypoint.geometry.x }}"
+    		};
+    		{% endfor %}
+
+    		var _waypoint = null;
+    		var _waypointDiv = null;
+
+    		var waypointOnClick = function(){
+    			_waypointDiv = this;
+    			_waypoint = waypointsByID[$(this).attr('id')];
+
+    			if (!marker) {
+    				marker = L.marker([_waypoint.lat, _waypoint.lng],
+    					{}).addTo(map);
+    			} else {
+    				marker.setLatLng(new L.LatLng(_waypoint.lat, _waypoint.lng));
+    			}
+
+    			map.panTo([_waypoint.lat, _waypoint.lng])
+    		};
+
+    		var waypointHoverIn = function(){
+    			$(this).addClass('hover');
+    		};
+
+    		var waypointHoverOut = function(){
+    			$(this).removeClass('hover');
+    		};
+
+    		var activateWaypoints = function(){
+    			$('.waypoint')
+    				.click(waypointOnClick)
+    				.hover(waypointHoverIn, waypointHoverOut);
+    		};
+
+    		activateWaypoints();
+
     	});
     </script>
 </html>
