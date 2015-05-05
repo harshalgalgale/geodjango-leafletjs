@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+		 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/themes/cupertino/jquery-ui.css" type="text/css" media="all" /> 
+		 <style>
+            body {font-family: sans-serif}
+            #map { width: 500px; height: 300px}
+        </style>
+    </head>
+    <body>
+    	<h2>{{title}}</h2>
+    	<div id='map'></div>
+	</body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script type='text/javascript'>
+    	$(function() {
+    		var map = L.map('map').setView([41.879535, -87.624333], 5);
+
+    		L.tileLayer('http://a.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+    			maxZoom: 18
+    		}).addTo(map);
+    	});
+    </script>
+</html>
